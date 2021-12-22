@@ -4,15 +4,17 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ClassMemberList {
 
     enum ListTarget {
+
         PUBLIC,
         PRIVATE,
         PROTECTED,
-        ANY
+        ANY //no implement
     }
 
     public static void listMethod(String className, ListTarget[] mode) {
@@ -21,8 +23,11 @@ public class ClassMemberList {
             System.out.println("class : " + c.getName());
 
             for (Method m : c.getDeclaredMethods()) {
-                // System.out.println("debug2: " + c.getSimpleName() + ":" + m.getName());
-                if(Modifier.isPublic(m.getModifiers())) {
+                // System.out.println("debug2: " + c.getSimpleName() + ":" + m.getName() + ":" + m.getModifiers());
+                boolean isTargetForPublic = Modifier.isPublic(m.getModifiers()) && Arrays.asList(mode).contains(ListTarget.PUBLIC);
+                boolean isTargetForPrivate = Modifier.isPrivate(m.getModifiers()) && Arrays.asList(mode).contains(ListTarget.PRIVATE);
+                boolean isTargetForProtected = Modifier.isProtected(m.getModifiers()) && Arrays.asList(mode).contains(ListTarget.PROTECTED);
+                if(isTargetForPublic || isTargetForPrivate || isTargetForProtected) {
                     String s = formatForPrintMethod(m);
                     System.out.println(s);
                 }
@@ -47,7 +52,7 @@ public class ClassMemberList {
 
     private static String arrayToString(Annotation[] arrays) {
         List<String> list = new ArrayList<>();
-        for(Annotation a : arrays) {
+        for (Annotation a : arrays) {
             String name = a.annotationType().getName();
             // System.out.println("debug: " + name);
             list.add(name);

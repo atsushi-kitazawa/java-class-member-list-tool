@@ -1,5 +1,7 @@
 package com.example;
 
+import com.example.ClassMemberList.ListTarget;
+
 /**
  * Hello world!
  *
@@ -10,7 +12,7 @@ public class App {
             @Override
             public boolean visit(String clazz) {
 
-                ClassMemberList.listMethod(clazz, null);
+                ClassMemberList.listMethod(clazz, new ListTarget[]{ListTarget.PUBLIC});
 
                 return true;
             }
