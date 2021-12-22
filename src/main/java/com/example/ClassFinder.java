@@ -9,6 +9,7 @@ public class ClassFinder {
 
     private static final String TARGET_JAE = ".jar";
     private static final String TARGET_CLASS = ".class";
+    private static final String TARGET_PACKAGE = "com.example";
 
     public static void findClasses(Visitor<String> visitor) {
         String classpath = System.getProperty("java.class.path");
@@ -37,8 +38,8 @@ public class ClassFinder {
             }
         } else {
             if (file.getName().toLowerCase().endsWith(".jar") && includeJars) {
-                System.out.println("debug1: " + file.getName());
                 // list class in jar file.
+                // System.out.println("debug1: " + file.getName());
                 JarFile jar = null;
                 try {
                     jar = new JarFile(file);
@@ -52,16 +53,27 @@ public class ClassFinder {
                         String name = entry.getName();
                         int extIndex = name.lastIndexOf(".class");
                         if (extIndex > 0) {
-                            if (!visitor.visit(name.substring(0, extIndex).replace("/", "."))) {
+                            name = name.substring(0, extIndex).replace("/", ".");
+                            // System.out.println("debug4: " + name);
+                            if(!name.startsWith(TARGET_PACKAGE)) {
+                                continue;
+                            }
+                            if (!visitor.visit(name)) {
                                 return false;
                             }
                         }
                     }
                 }
             } else if (file.getName().toLowerCase().endsWith(".class")) {
-                // System.out.println("debug: " + file.getName());
                 // list class not in jar file.
-                if (!visitor.visit(createClassName(root, file))) {
+                // System.out.println("debug2: " + file.getName());
+                String className = createClassName(root, file);
+                if(!className.startsWith(TARGET_PACKAGE)) {
+                    return false;
+                }
+
+                // System.out.println("debug3: " + className);
+                if (!visitor.visit(className)) {
                     return false;
                 }
             }

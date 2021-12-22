@@ -15,7 +15,7 @@ public class ClassMemberList {
     public static void listMethod(String className, ListTarget[] mode) {
         try {
             Class<?> c = Class.forName(className);
-            System.out.println("class : " + c.getSimpleName());
+            System.out.println("class : " + c.getName());
 
             for (Method m : c.getDeclaredMethods()) {
                 // System.out.println("debug2: " + c.getSimpleName() + ":" + m.getName());
