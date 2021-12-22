@@ -9,10 +9,9 @@ public class App {
         ClassFinder.findClasses(new Visitor<String>() {
             @Override
             public boolean visit(String clazz) {
-                // System.out.println(clazz);
 
                 ClassMemberList.listMethod(clazz, null);
-                
+
                 return true;
             }
         });

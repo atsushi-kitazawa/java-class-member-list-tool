@@ -15,11 +15,10 @@ public class ClassMemberList {
     public static void listMethod(String className, ListTarget[] mode) {
         try {
             Class<?> c = Class.forName(className);
-            // System.out.println("debug1: " + c.getSimpleName());
+            System.out.println("class : " + c.getSimpleName());
 
             for (Method m : c.getDeclaredMethods()) {
                 // System.out.println("debug2: " + c.getSimpleName() + ":" + m.getName());
-
                 if(Modifier.isPublic(m.getModifiers())) {
                     String s = formatForPrintMethod(m);
                     System.out.println(s);
@@ -36,9 +35,9 @@ public class ClassMemberList {
 
     private static String formatForPrintMethod(Method m) {
         StringBuffer sb = new StringBuffer();
-        sb.append("Name : " + m.getName());
+        sb.append("    Name : " + m.getName());
         sb.append(System.getProperty("line.separator"));
-        sb.append("Annotation : " + m.getAnnotation(Deprecated.class));
+        sb.append("    Annotation : " + m.getAnnotation(Deprecated.class));
 
         return sb.toString();
     }

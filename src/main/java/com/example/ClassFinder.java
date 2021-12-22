@@ -33,9 +33,9 @@ public class ClassFinder {
             }
         } else {
             if (file.getName().toLowerCase().endsWith(".jar") && includeJars) {
-                if(true)
+                if (true)
                     return false;
-                
+
                 // list class in jar file.
                 JarFile jar = null;
                 try {
