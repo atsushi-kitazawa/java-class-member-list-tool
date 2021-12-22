@@ -1,7 +1,10 @@
 package com.example;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClassMemberList {
 
@@ -35,10 +38,20 @@ public class ClassMemberList {
 
     private static String formatForPrintMethod(Method m) {
         StringBuffer sb = new StringBuffer();
-        sb.append("    Name : " + m.getName());
+        sb.append("    Method : " + m.getName());
         sb.append(System.getProperty("line.separator"));
-        sb.append("    Annotation : " + m.getAnnotation(Deprecated.class));
+        sb.append("    Annotation : " + arrayToString(m.getDeclaredAnnotations()));
 
         return sb.toString();
+    }
+
+    private static String arrayToString(Annotation[] arrays) {
+        List<String> list = new ArrayList<>();
+        for(Annotation a : arrays) {
+            String name = a.annotationType().getName();
+            // System.out.println("debug: " + name);
+            list.add(name);
+        }
+        return list.toString();
     }
 }
