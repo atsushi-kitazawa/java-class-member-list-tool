@@ -6,6 +6,10 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class ClassFinder {
+
+    private static final String TARGET_JAE = ".jar";
+    private static final String TARGET_CLASS = ".class";
+
     public static void findClasses(Visitor<String> visitor) {
         String classpath = System.getProperty("java.class.path");
         String[] paths = classpath.split(System.getProperty("path.separator"));
@@ -33,9 +37,7 @@ public class ClassFinder {
             }
         } else {
             if (file.getName().toLowerCase().endsWith(".jar") && includeJars) {
-                if (true)
-                    return false;
-
+                System.out.println("debug1: " + file.getName());
                 // list class in jar file.
                 JarFile jar = null;
                 try {
