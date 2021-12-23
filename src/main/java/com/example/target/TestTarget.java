@@ -8,7 +8,7 @@ public class TestTarget {
     }
 
     @Deprecated
-    @TestAnnotation
+    @TestAnnotation("abc")
     @SuppressWarnings("aaa")
     public void publicMethod() {
     }

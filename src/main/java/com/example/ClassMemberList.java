@@ -1,11 +1,10 @@
 package com.example;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+
+import com.example.formatter.Formatter;
 
 public class ClassMemberList {
 
@@ -14,49 +13,41 @@ public class ClassMemberList {
         PUBLIC,
         PRIVATE,
         PROTECTED,
-        ANY //no implement
+        ANY // no implement
     }
 
-    public static void listMethod(String className, ListTarget[] mode) {
+    private Formatter formatter;
+
+    public ClassMemberList(Formatter f) {
+        formatter = f;
+    }
+
+    public void listMethod(String className, ListTarget[] mode) {
         try {
             Class<?> c = Class.forName(className);
-            System.out.println("class : " + c.getName());
+            formatter.formatClass(c);
 
             for (Method m : c.getDeclaredMethods()) {
-                // System.out.println("debug2: " + c.getSimpleName() + ":" + m.getName() + ":" + m.getModifiers());
-                boolean isTargetForPublic = Modifier.isPublic(m.getModifiers()) && Arrays.asList(mode).contains(ListTarget.PUBLIC);
-                boolean isTargetForPrivate = Modifier.isPrivate(m.getModifiers()) && Arrays.asList(mode).contains(ListTarget.PRIVATE);
-                boolean isTargetForProtected = Modifier.isProtected(m.getModifiers()) && Arrays.asList(mode).contains(ListTarget.PROTECTED);
-                if(isTargetForPublic || isTargetForPrivate || isTargetForProtected) {
-                    String s = formatForPrintMethod(m);
-                    System.out.println(s);
+                // System.out.println("debug2: " + c.getSimpleName() + ":" + m.getName() + ":" +
+                // m.getModifiers());
+                boolean isTargetForPublic = Modifier.isPublic(m.getModifiers())
+                        && Arrays.asList(mode).contains(ListTarget.PUBLIC);
+                boolean isTargetForPrivate = Modifier.isPrivate(m.getModifiers())
+                        && Arrays.asList(mode).contains(ListTarget.PRIVATE);
+                boolean isTargetForProtected = Modifier.isProtected(m.getModifiers())
+                        && Arrays.asList(mode).contains(ListTarget.PROTECTED);
+                if (isTargetForPublic || isTargetForPrivate || isTargetForProtected) {
+                    formatter.formatMethod(m);
                 }
             }
+
+            formatter.print();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public static void listVariable(String className, ListTarget[] mode) {
+    public void listVariable(String className, ListTarget[] mode) {
 
-    }
-
-    private static String formatForPrintMethod(Method m) {
-        StringBuffer sb = new StringBuffer();
-        sb.append("    Method : " + m.getName());
-        sb.append(System.getProperty("line.separator"));
-        sb.append("    Annotation : " + arrayToString(m.getDeclaredAnnotations()));
-
-        return sb.toString();
-    }
-
-    private static String arrayToString(Annotation[] arrays) {
-        List<String> list = new ArrayList<>();
-        for (Annotation a : arrays) {
-            String name = a.annotationType().getName();
-            // System.out.println("debug: " + name);
-            list.add(name);
-        }
-        return list.toString();
     }
 }

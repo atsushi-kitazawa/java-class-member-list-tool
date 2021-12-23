@@ -1,6 +1,8 @@
 package com.example;
 
 import com.example.ClassMemberList.ListTarget;
+import com.example.formatter.Formatter;
+import com.example.formatter.SimpleFormatter;
 
 /**
  * Hello world!
@@ -12,7 +14,8 @@ public class App {
             @Override
             public boolean visit(String clazz) {
 
-                ClassMemberList.listMethod(clazz, new ListTarget[]{ListTarget.PUBLIC});
+                Formatter f = new SimpleFormatter();
+                new ClassMemberList(f).listMethod(clazz, new ListTarget[]{ListTarget.PUBLIC});
 
                 return true;
             }
